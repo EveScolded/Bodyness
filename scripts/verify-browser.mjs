@@ -1,0 +1,54 @@
+import { chromium } from '@playwright/test';
+import assert from 'node:assert/strict';
+import { mkdir } from 'node:fs/promises';
+const browser = await chromium.launch({ channel: 'msedge', headless: true });
+await mkdir('artifacts', { recursive: true });
+const errors = [];
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+page.on('pageerror', error => errors.push(error.message));
+page.on('response', response => { if (response.status() >= 400 && response.url().includes('127.0.0.1')) errors.push(`${response.status()} ${response.url()}`); });
+await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
+await page.screenshot({ path: 'artifacts/desktop-hero.png' });
+assert.equal(await page.locator('h1').innerText(), 'Zatrzymaj się.\nPoczuj spokój.');
+assert.equal(await page.locator('.service-row').count(), 11);
+assert.equal(await page.locator('.certificate').count(), 5);
+assert.equal(await page.locator('a[href^="tel:"]').count(), 0);
+await page.locator('.certificate').first().click();
+await page.locator('.yarl__container').waitFor();
+await page.keyboard.press('ArrowRight');
+await page.waitForTimeout(400);
+assert.match(await page.locator('.yarl__counter').innerText(), /2\s*\/\s*5/);
+await page.keyboard.press('Escape');
+await page.locator('.yarl__container').waitFor({ state: 'detached' });
+assert.equal(await page.locator('.certificate').first().evaluate(el => el === document.activeElement), true);
+for (const section of ['about', 'offer', 'contact']) {
+  await page.locator(`#${section}`).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(150);
+}
+await page.screenshot({ path: 'artifacts/desktop-full.png', fullPage: true });
+for (const width of [320, 375, 768, 1440]) {
+  await page.setViewportSize({ width, height: 900 });
+  await page.waitForTimeout(200);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, `Horizontal overflow at ${width}px`);
+}
+await page.setViewportSize({ width: 375, height: 812 });
+await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
+await page.screenshot({ path: 'artifacts/mobile-hero.png' });
+await page.getByRole('button', { name: 'Otwórz menu' }).click();
+assert.equal(await page.evaluate(() => document.body.style.overflow), 'hidden');
+await page.locator('#mobile-menu a[href="#offer"]').click();
+await page.locator('#mobile-menu').waitFor({ state: 'detached' });
+assert.equal(await page.locator('#mobile-menu').count(), 0);
+assert.notEqual(await page.evaluate(() => document.body.style.overflow), 'hidden');
+await page.locator('.certificate').first().click();
+await page.locator('.yarl__container').waitFor();
+await page.getByRole('button', { name: 'Zamknij', exact: true }).click();
+await page.locator('.yarl__container').waitFor({ state: 'detached' });
+for (const image of await page.locator('img').all()) await image.scrollIntoViewIfNeeded();
+await page.waitForTimeout(250);
+const broken = await page.locator('img').evaluateAll(images => images.filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src));
+assert.deepEqual(broken, []);
+await page.screenshot({ path: 'artifacts/mobile-full.png', fullPage: true });
+assert.deepEqual(errors, []);
+console.log('PASS: desktop/mobile, 320–1440px overflow, 11 services, 5 certificates, image loading, lightbox keyboard and focus, mobile menu, placeholder telephone and runtime errors.');
+await browser.close();
