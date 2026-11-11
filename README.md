@@ -25,7 +25,7 @@ For the included browser verification, run the preview on port 4173, then `node 
 ## Edit content
 
 - `src/data/services.ts`: categories, service descriptions, durations and example prices. Confirm the real offer before publishing; replace the example price notice once verified.
-- `src/data/contact.ts`: verified telephone display and `tel:+48...` value. Calling is disabled while the number is empty. Instagram and Facebook URLs are read from `social.txt`.
+- `src/data/contact.ts`: edit `phoneDisplay` (Polish number) and `email` here to update contact details throughout the site. Telephone and email links are derived automatically. Instagram and Facebook URLs are read from `social.txt`. Contact details embedded in voucher PDFs and images must be updated separately.
 - `src/data/content.ts`: About introduction and qualifications text. Personalize the marked example biography and remove its placeholder note when approved.
 - `src/data/images.ts`: selected local photographs and their ordering. Use exact filenames from `photos/`.
 - `photos/certificates/`: add JPG, JPEG, PNG or WebP files and rebuild. Certificates are discovered automatically and sorted by filename. All five supplied certificates are included.

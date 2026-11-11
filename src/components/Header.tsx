@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { images } from '../data/images';
 import { useActiveSection } from '../hooks/useActiveSection';
-export const navigation = [['home', 'Start'], ['about', 'O mnie'], ['offer', 'Oferta'], ['contact', 'Kontakt']] as const;
+export const navigation = [['home', 'Start'], ['about', 'O mnie'], ['offer', 'Oferta'], ['vouchers', 'Vouchery'], ['contact', 'Kontakt']] as const;
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

@@ -3,7 +3,7 @@ export function useActiveSection() {
   const [active, setActive] = useState('home');
   useEffect(() => {
     const update = () => {
-      const sections = ['home', 'about', 'offer', 'contact'];
+      const sections = ['home', 'about', 'offer', 'vouchers', 'contact'];
       const current = sections.filter(id => (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) <= window.innerHeight * 0.35).at(-1);
       if (current) setActive(current);
     };
