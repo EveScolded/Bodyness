@@ -12,9 +12,9 @@ export const categories: MassageCategory[] = [
     { id: 'relax120', name: 'Masaż relaksacyjny całego ciała', description: 'Relaksujący masaż całego ciała, twarzy i głowy.', durationMinutes: 120, pricePLN: 250 },
     { id: 'body', name: 'Masaż częściowy', description: 'Masaż skupiony na wybranych partiach ciała.', durationMinutes: 60, pricePLN: 120 },
   ] },
-  { id: 'kobido', title: 'Kobido', subtitle: 'Japońska sztuka dotyku', description: 'Japoński masaż twarzy obejmujący drenaż limfatyczny, masaż liftingujący, pracę na pukntach akupresury oraz masaż dekoltu, barków, szyi i karku.', image: images.kobido, imageAlt: 'Terapeutka wykonująca delikatny masaż twarzy', services: [
+  { id: 'kobido', title: 'Kobido', subtitle: 'Japońska sztuka dotyku', description: 'Japoński masaż twarzy obejmujący drenaż limfatyczny, masaż liftingujący, pracę na punktach akupresury oraz masaż dekoltu, barków, szyi i karku.', image: images.kobido, imageAlt: 'Terapeutka wykonująca delikatny masaż twarzy', services: [
     { id: 'kobido60', name: 'Kobido', description: 'Podstawowy masaż kobido obejmujący masaż twarzy, szyi, karku i dekoltu.', durationMinutes: 60, pricePLN: 180 },
-    { id: 'kobido90', name: 'Rytuał Kobido', description: 'Rytuał rozbudowany o dodatkowy masaż szyi, karku i barków, zakończony wybraną pielegnacją twarzy.', durationMinutes: 90, pricePLN: 200},
+    { id: 'kobido90', name: 'Rytuał Kobido', description: 'Rytuał rozbudowany o dodatkowy masaż szyi, karku i barków, zakończony wybraną pielęgnacją twarzy.', durationMinutes: 90, pricePLN: 200},
     { id: 'kobido100', name: 'Kobido rozszerzone', description: 'Połączenie masażu pleców, barków, karku i kobido.', durationMinutes: 90, pricePLN: 220 },
   ] },
 ];
